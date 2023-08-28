@@ -1,0 +1,140 @@
+@import "nullstyle.scss";
+/* подключение_нулевых стилей */
+
+/* Шрифты */
+
+/* Шрифты_конец */
+
+
+///* Шаблоны *///
+
+$maxWidth    :1200;
+$maxWidthMake:1920;
+
+@mixin adapt-value($property, $startSize, $minSize, $type) {
+    $addSize: $startSize - $minSize;
+
+    @if $type==1 {
+        #{$property}:#{$startSize + px};
+
+        @media (max-width:#{$maxWidth + px}) {
+            #{$property}:calc(#{$minSize + px} + (#{$addSize} * ((100vw - 280px) / #{$maxWidth - 280})));
+        }
+    }
+
+    @else if $type==2 {
+        #{$property}:#{$startSize + px};
+
+        @media (min-width:#{$maxWidth + px}) {
+            #{$property}:calc(#{$minSize + px} + (#{$addSize} * ((100vw - 280px) / #{$maxWidthMake - 280})));
+        }
+    }
+
+    @else {
+        #{$property}:calc(#{$minSize + px} + (#{$addSize} * ((100vw - 280px) / #{$maxWidthMake - 280})));
+
+    }
+}
+
+//@include adaptiv-font(44, 12);///
+
+/* Шаблоны */
+body {
+    height          : 100%;
+    background-color: #333;
+    min-width       : 280px;
+    font-family     : "Lexend Mega", "Helvetica Neue", Helvetica, sans-serif;
+}
+
+html {
+    font-size: 20px;
+}
+
+////usuallys
+.container {
+    margin   : 0 auto;
+    padding  : 0 20px;
+    max-width: calc(#{$maxWidth * 1px} + 40px);
+}
+
+.wrapper {
+    min-height: 100vh;
+}
+
+.gradient {
+    min-height : 100vh;
+    display    : flex;
+    align-items: center;
+
+}
+
+.gradient__container {
+    flex           : 1 1 auto;
+    display        : flex;
+    justify-content: center;
+
+}
+
+.gradient__body {}
+
+.gradient__circle {}
+
+@keyframes spin {
+
+    0% {
+        transform: rotate(0deg) scale(1.5) ;
+      
+    }
+
+    
+
+    100% {
+        transform: rotate(360deg) scale(1.5) ;
+        
+    }
+
+}
+
+.circle {
+overflow: hidden;
+    @include adapt-value("width", 200, 200, 0);
+    @include adapt-value("height", 200, 200, 0);
+
+    border-radius: 5%;
+background-color: #333;
+
+
+    /*  */
+position: relative;
+z-index: 0;
+
+    /* box-shadow: 0 0 5px black, 0 0 20px blueviolet, 0 0 40px whitesmoke; */
+
+}
+
+.circle::before{
+    content: '';
+position: absolute;
+z-index: 2;
+top: 50%;
+left: 50%;
+transform: translate(-50%,-50%);
+border-radius: inherit;
+height: calc(100% - 10px);
+width: calc(100% - 10px);
+background-color: #202020;
+border: 5px solid #333;
+}
+
+
+
+.circle::after{
+    content: '';
+position: absolute;
+background-image:repeating-conic-gradient(from 0deg,transparent 0deg, transparent 30deg,blue 90deg,transparent 90deg,transparent 120deg,violet 180deg);
+width: 100%;
+
+height: 100%;
+z-index: 1;
+animation: spin linear 5.0s 0s infinite;
+}
